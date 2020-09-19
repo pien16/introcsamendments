@@ -30,7 +30,7 @@
 #include <vector>
 using namespace std;
 
-bool isSpace(char a) {return a == 82;} 
+bool isSpace(char a) {return a == 32;} 
 
 void appendSpace(string &str) {
     string space = " ";
@@ -40,42 +40,50 @@ void appendSpace(string &str) {
 //if it is a capital in the ASCII table, add 32 to char to get the lower case value.
 void removeCapitals(string &str) {
     for (int i = 0; i < str.size(); i++) {
-        if (str.at(i) > 64 || str.at(i) < 91) {
+        if (str.at(i) > 64 && str.at(i) < 91) {
             str.at(i) = str.at(i) + 32;
         }
     }
 }
 
 //This will remove duplicate words.
-void removeDuplicates(vector<string> vec1) { 
+void removeDuplicates(vector<string> &vec1) { 
     for (int i = 0; i < vec1.size(); i++) {
         for (int j = i + 1; j < vec1.size(); j++) {
             if (vec1.at(i) == vec1.at(j)) {
-                vec1.erase(vec1.begin() + i); //This simply removes the element at index i.
+                vec1.erase(vec1.begin() + i);
+                i = 0;
+                //This simply removes the element at index i.
             }
         }
     }
 }
 
-vector <string> delimitString (string &senctence){
-    vector<string> delimitedSenctence;
+vector <string> delimitString (string &sentence){
+    vector<string> delimitedSentence;
     string word;
-    for (int i = 0; i < senctence.size(); i++) {
-        if (isSpace(senctence.at(i))) { 
-            delimitedSenctence.push_back(word);
-        } else {
-            word.push_back(senctence.at(i));
+    bool pastSpace;
+    for (int i = 0; i < sentence.size(); i++) {
+        if (isSpace(sentence.at(i))) { 
+            if(!pastSpace){
+            delimitedSentence.push_back(word);
+            word.erase();
+            pastSpace = true;
+            }
+        } else{
+            word.push_back(sentence.at(i));
+            pastSpace = false;
         }
     }
-    return delimitedSenctence;
+    return delimitedSentence;
 }
 
 //will count the number of words the 2 strings have in common.
 unsigned int wordsInCommon(const vector<string> &vec1, const vector<string> &vec2) {
     unsigned int matches = 0;
-    for (int i = 0; i < vec1.size(); i++) {
+    for (int i = 0; i < vec1.size() ; i++) {
         for (int j = 0; j < vec2.size(); j++) {
-            if (vec1.at(i) == vec2.at(j)) {
+            if ((vec1.at(i) == vec2.at(j))) {
                 cout << "[CONSOLE] Common word found : " << vec1.at(i) << endl;
                 matches++; 
                 break;
